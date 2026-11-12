@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f1420">
+  <title>Tutelapp · Redacta tu acción de tutela</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="aviso" role="note">
+    <strong>⚠️ Herramienta educativa:</strong> no reemplaza la asesoría de un abogado. Tus datos no se guardan ni se envían.
+  </div>
+
+  <header class="cabecera">
+    <h1>Tutel<span>app</span></h1>
+    <p>Redacta una acción de tutela en Colombia, paso a paso, desde tu navegador.</p>
+  </header>
+
+  <main>
+    <form id="form" novalidate>
+      <!-- 1. Accionante -->
+      <section class="tarjeta">
+        <h2><span class="num">1</span> Quién presenta la tutela</h2>
+        <div class="grid">
+          <label class="campo completo">Nombres y apellidos *
+            <input id="nombre" required autocomplete="name">
+          </label>
+          <label class="campo">Tipo de documento *
+            <select id="tipoDoc" required>
+              <option value="">Selecciona…</option>
+              <option>cédula de ciudadanía</option>
+              <option>cédula de extranjería</option>
+              <option>tarjeta de identidad</option>
+              <option>pasaporte</option>
+              <option>permiso por protección temporal</option>
+            </select>
+          </label>
+          <label class="campo">Número de documento *
+            <input id="numDoc" required inputmode="numeric">
+          </label>
+          <label class="campo">Ciudad de residencia *
+            <input id="ciudad" required autocomplete="address-level2">
+          </label>
+          <label class="campo">Dirección *
+            <input id="direccion" required autocomplete="street-address">
+          </label>
+          <label class="campo">Correo electrónico *
+            <input id="correo" type="email" required autocomplete="email">
+          </label>
+          <label class="campo">Teléfono *
+            <input id="telefono" type="tel" required autocomplete="tel">
+          </label>
+        </div>
+
+        <fieldset class="opciones">
+          <legend>Actúas…</legend>
+          <label class="radio"><input type="radio" name="calidad" value="propio" checked> A nombre propio</label>
+          <label class="radio"><input type="radio" name="calidad" value="representacion"> En representación de otra persona</label>
+        </fieldset>
+        <div id="bloqueRepresentado" class="grid oculto">
+          <label class="campo completo">Nombre de la persona representada *
+            <input id="representado">
+          </label>
+          <label class="campo completo">Calidad en la que actúas (opcional)
+            <input id="calidadRep" placeholder="Ej.: madre, agente oficioso, apoderado">
+          </label>
+        </div>
+      </section>
+
+      <!-- 2. Accionado -->
+      <section class="tarjeta">
+        <h2><span class="num">2</span> Contra quién</h2>
+        <div class="grid">
+          <label class="campo completo">Nombre de la entidad o persona *
+            <input id="accionado" required placeholder="Ej.: Nueva EPS S.A.">
+          </label>
+          <label class="campo completo">Tipo *
+            <select id="tipoAccionado" required>
+              <option value="">Selecciona…</option>
+              <option value="eps">EPS</option>
+              <option value="territorial">Entidad pública municipal o departamental</option>
+              <option value="nacional">Entidad pública nacional</option>
+              <option value="particular">Particular</option>
+            </select>
+          </label>
+          <label class="campo completo">Dirección o correo de notificación de la accionada (opcional)
+            <input id="notifAccionado" placeholder="Ej.: notificacionesjudiciales@entidad.gov.co">
+          </label>
+        </div>
+        <p id="reparto" class="info oculto" aria-live="polite"></p>
+      </section>
+
+      <!-- 3. Derechos -->
+      <section class="tarjeta">
+        <h2><span class="num">3</span> Derechos vulnerados *</h2>
+        <div class="chips" id="derechos">
+          <label class="chip"><input type="checkbox" value="salud"> Salud</label>
+          <label class="chip"><input type="checkbox" value="vida digna"> Vida digna</label>
+          <label class="chip"><input type="checkbox" value="seguridad social"> Seguridad social</label>
+          <label class="chip"><input type="checkbox" value="mínimo vital"> Mínimo vital</label>
+          <label class="chip"><input type="checkbox" value="petición"> Petición</label>
+          <label class="chip"><input type="checkbox" value="debido proceso"> Debido proceso</label>
+          <label class="chip"><input type="checkbox" value="igualdad"> Igualdad</label>
+          <label class="chip"><input type="checkbox" value="otro" id="chkOtro"> Otro</label>
+        </div>
+        <label id="bloqueOtro" class="campo oculto">¿Cuál otro derecho? *
+          <input id="otroDerecho" placeholder="Ej.: educación">
+        </label>
+      </section>
+
+      <!-- 4. Hechos -->
+      <section class="tarjeta">
+        <h2><span class="num">4</span> Hechos *</h2>
+        <p class="ayuda">Escribe un hecho por línea, en orden. Se numeran solos.</p>
+        <textarea id="hechos" rows="6" required placeholder="El 3 de marzo de 2026 el médico tratante me ordenó una resonancia magnética.&#10;Radiqué la orden ante la EPS el 5 de marzo.&#10;A la fecha la EPS no ha autorizado el examen."></textarea>
+      </section>
+
+      <!-- 5. Pretensiones -->
+      <section class="tarjeta">
+        <h2><span class="num">5</span> Lo que pides al juez *</h2>
+        <p class="ayuda">Una petición por línea.</p>
+        <textarea id="pretensiones" rows="4" required placeholder="Tutelar mis derechos fundamentales a la salud y a la vida digna.&#10;Ordenar a la EPS autorizar y practicar la resonancia magnética en un plazo de 48 horas."></textarea>
+      </section>
+
+      <!-- 6. Medida provisional -->
+      <section class="tarjeta">
+        <h2><span class="num">6</span> Medida provisional <small>(opcional)</small></h2>
+        <label class="check"><input type="checkbox" id="medida"> Solicito medida provisional (artículo 7 del Decreto 2591 de 1991)</label>
+        <label id="bloqueMedida" class="campo oculto">Explica por qué es urgente *
+          <textarea id="urgencia" rows="3" placeholder="Explica el perjuicio que sufrirías si se espera al fallo."></textarea>
+        </label>
+      </section>
+
+      <!-- 7. Pruebas -->
+      <section class="tarjeta">
+        <h2><span class="num">7</span> Pruebas y anexos</h2>
+        <p class="ayuda">Uno por línea.</p>
+        <textarea id="pruebas" rows="4" placeholder="Copia de mi cédula.&#10;Orden médica del 3 de marzo de 2026.&#10;Constancia de radicación ante la EPS."></textarea>
+      </section>
+
+      <!-- 8. Juramento -->
+      <section class="tarjeta">
+        <h2><span class="num">8</span> Juramento *</h2>
+        <label class="check">
+          <input type="checkbox" id="juramento" required>
+          Manifiesto bajo la gravedad del juramento que no he presentado otra acción de tutela por los mismos hechos y derechos.
+        </label>
+        <p class="ayuda">Artículo 37 del Decreto 2591 de 1991.</p>
+      </section>
+
+      <div id="errores" class="errores oculto" role="alert" tabindex="-1"></div>
+
+      <button type="submit" class="btn primario grande">Generar tutela</button>
+    </form>
+
+    <section id="resultado" class="resultado oculto" aria-live="polite">
+      <div class="barra">
+        <h2>Tu tutela</h2>
+        <div class="acciones">
+          <button type="button" id="btnCopiar" class="btn">Copiar texto</button>
+          <button type="button" id="btnPdf" class="btn primario">Descargar PDF</button>
+        </div>
+      </div>
+      <p class="ayuda">Revisa el texto con calma. Para el PDF, elige “Guardar como PDF” en la ventana de impresión.</p>
+      <article id="documento" class="documento"></article>
+    </section>
+  </main>
+
+  <footer class="pie">
+    Tutelapp · Todo ocurre en tu navegador. Nada se guarda ni se envía.
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
